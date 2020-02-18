@@ -1,3 +1,12 @@
+/**
+ *
+ * Класс для тестирования обмена элементами
+ *
+ * @author SlViKo(Кобозев Вячеслав)
+ * @version date 18/02/2020
+ */
+package LessonOne.TaskOne;
+
 public class Cat {
 
     private String Name;
@@ -10,7 +19,7 @@ public class Cat {
 
     @Override
     public String toString() {
-        return "Cat{" +
+        return "LessonOne.TaskOne.Cat{" +
                 "Name='" + Name + '\'' +
                 ", age=" + age +
                 '}';
