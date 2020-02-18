@@ -1,8 +1,8 @@
 package LessonOne.TaskThree;
 
  abstract class Fruit {
-    private float weight;
-    private String name;
+    protected float weight;
+    protected String name;
 
      abstract public float getWeight();
      abstract public String getName();
