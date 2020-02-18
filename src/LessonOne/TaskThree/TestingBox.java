@@ -20,7 +20,7 @@ public class TestingBox {
         Box<?> boxOne = new Box<>("Коробка");
         Box<?> boxTwo = new Box<>("Короб");
         Box<?> boxThree = new Box<>("Коробочка");
-        
+
         boxOne.addFruit(new Apple());
         boxOne.addFruit(new Apple());
         boxOne.addFruit(new Apple());
