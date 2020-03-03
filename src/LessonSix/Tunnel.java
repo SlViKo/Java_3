@@ -3,7 +3,7 @@ package LessonSix;
 import java.util.concurrent.Semaphore;
 
 public class Tunnel extends Stage {
-    private static Semaphore smp = new Semaphore(2); // ограничение на везд одновременно двух машин в тунель
+    private static Semaphore smp; // ограничение на везд одновременно двух машин в тунель
     public Tunnel() {
         this.length = 80;
         this.description = "Тоннель " + length + " метров";
@@ -25,5 +25,9 @@ public class Tunnel extends Stage {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void setSmp(Semaphore smp) {
+        Tunnel.smp = smp;
     }
 }
