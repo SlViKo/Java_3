@@ -1,4 +1,72 @@
 package LessonSix;
 
-public class Car {
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.Semaphore;
+
+public class Car implements Runnable {
+    private static int CARS_COUNT;
+
+    private static Semaphore smp = new Semaphore(1); // объект для определения победителя
+
+    static {
+        CARS_COUNT = 0;
+    }
+
+    private Race race;
+    private int speed;
+    private String name;
+    CyclicBarrier cb;
+
+    public String getName() {
+        return name;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public Car(Race race, int speed, CyclicBarrier cb) {
+        this.race = race;
+        this.speed = speed;
+        this.cb = cb;  // передаю по констуктуру CyclicBarrier для синхронизации основного потока и потоков машин
+        CARS_COUNT++;
+        this.name = "Участник #" + CARS_COUNT;
+    }
+
+    @Override
+    public void run() {
+        try {
+            System.out.println(this.name + " готовится");
+            cb.await();
+            Thread.sleep(500 + (int) (Math.random() * 800));
+            System.out.println(this.name + " готов");
+            cb.await();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        for (int i = 0; i < race.getStages().size(); i++) {
+            race.getStages().get(i).go(this);
+        }
+
+        try {
+            smp.acquire(); // проверка на победителя ( доступ к проверки дается по Semaphore, чтобы не было несколько победителей)
+            if (!race.isCheckWin()) {
+                System.out.println(name + " WIN");
+                race.setCheckWin(true);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            smp.release(); //
+        }
+
+        try {
+            cb.await(); // ожидание приезда всех машин, для объявления окончания гонки
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (BrokenBarrierException e) {
+            e.printStackTrace();
+        }
+    }
 }
